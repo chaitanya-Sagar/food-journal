@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daly Task Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+    <style> 
+    body{
+        font-family: 'PT Sans', sans-serif;
+        font-size: 14px;
+    }
+    .dropzone:hover{ background:#ffffff;}
+    .dropzone{
+        background: #e8e8e8;
+    min-height: 30px;
+    width: 100%;
+    padding: 20px;
+
+    }
+    table{width: 100%;}
+    table td{border: 0px solid red; text-align: center;}
+    table textarea{ width: calc(100% - 20px); height: 30px;border: 0px solid red;
+    /* background: #bdbdbd; */
+    padding: 5px 10px;} 
+    button {
+    background: #146FCC;
+    border: 0px solid red;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    color: #eaeaea;
+    text-transform: uppercase;
+}
+input[type='number']{ width: 70px; }
+textarea.form-control{ height: 54px; }
+thead {
+    background:#FF6840;
+}
+.no-gutters  > .col  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+.dayy {
+    /* background: #dedede; */
+    display: inline-block;
+    padding: 5px 10px;
+    width: 30px;
+    text-align: center;
+    border-radius: 5px;
+    color: #CC2014;
+}
+.day{
+    font-size: 32px;
+    margin-top: -7px;
+    color:#146fcc
+}
+.weekend button{
+  
+    background: #FF6840;
+    /* border-bottom: 2px solid #ff684c; */
+    color:#FFFFFF
+}
+.weekend .day{
+    color:#FF6840
+}
+.table span.pull-left {
+    float: left;
+    color: #ffffff;
+    font-size: 21px;
+}
+.lesspad div[class*="col-"] {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 5px;
+}
+.customrow{
+    border: 1px solid #f1f1f1;
+    margin: 10px 0px;
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+.addBtn{
+    background: #b8dbff;
+    padding: 10px;
+    border-radius: 100%;
+    color: #9ab8d8;
+    box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.16);
+}
+.customrow .fa-star{
+    font-size: 8px;
+    color: #FFC107;
+}
+.locat{
+    color: #cccccc;
+    font-size: 12px;
+}
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.no-gutters .col,
+.no-gutters [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+    </style>
+</head>
+<body ng-app="fj" ng-controller="main">
+   
+    <div class="container-fluedic">
+        
+        <div class="row no-gutters">
+        <nav class="navbar fixed-top">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" ng-model="test.$" placeholder="Search anything" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button">ADD</button>
+                </div>
+              </div>
+      </nav>
+    </div>
+    </div>
+    <div class="container" style="margin-top:57px;">
+        <!-- <li ng-repeat="x in fdata | filter : test " >{{x.rname}} - {{x.dish}}-{{x.desc}}</li> -->
+        <div class="row customrow" ng-repeat="x in fdata | filter : test " >
+            <div class="col-3">{{x.dish}}<br><i ng-repeat="y in [].constructor(x.rating) track by $index" class="fa fa-star"></i> </div>
+            <div class="col-2">{{x.rname}} <span class="locat"> {{x.location}}</span></div>
+ <div class="col-7">{{x.date |date:"MM/dd"}} : {{x.desc}}</div>
+        </div>
+    </div>
+    <div class="container-fluedic" style="display: none;"  >
+         <div class="row">
+     <div class="col-md-2" id="dragFns" >
+            <button ng-show="addPrj" ng-click="addPrj=!addPrj" >Add Project</button >
+            <input ng-show="!addPrj" type="text" ng-model="newProject" />
+            <i ng-show="!addPrj" class="fa fa-check" ng-click="addProject2(newProject)" ></i>
+            <i ng-show="!addPrj" class="fa fa-times" ng-click="addPrj = !addPrj" ></i>
+           
+
+         <ul class="list-group" ng-repeat="list in basePrj" >
+             <li class="list-group-item" > {{list.project}}
+             <ul class="list-group" >
+                 <li class="list-group-item" draggable="true" id="{{$parent.$index +'-'+ $index}}" data-project="{{key}}" ondragstart="drag(event)" ng-repeat="x in list.task" >{{x}}</li>
+                 <li class="list-group-item" >
+                     
+                    <i class="fa fa-plus" ng-init="close = false" ng-show="!close" ng-click="close=!close" ></i>
+                        <input  ng-show="close"  type="text" ng-model="newTask" />
+                        <i ng-show="close" class="fa fa-check" ng-click="addTask(newTask,$index)" ></i>
+                        <i ng-show="close" class="fa fa-times" ng-click="close=!close"></i>
+
+                 </li>
+
+             </ul>
+            </li>
+         </ul>
+     </div>
+      <div class="col-md-10">
+<!-- {{task}} -->
+<table class="table table-striped" ng-cloak >
+    <thead>
+        <tr>
+            <td colspan="2"><span class="pull-left" >Time Sheet notes </span><button class="pull-right" ng-click="exportToCsv(task)" >Download Data in CSV</button></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="day in task track by $index" repeat-done="foo()" ng-class="(day.day | date:'EEE') == 'Sat' || (day.day | date:'EEE') == 'Sun'?'weekend':''">
+            <td width="200" >
+                <!-- <span class="dayy d-none"> {{$index + 1}} </span>  -->
+                <div class="container no-gutters" >
+                <div class="row">
+                    <div class="col"> <div  class="row day">	 {{ day.day | date:'dd'}} </div> </div>
+                    <div class="col">
+                            <div class="row" >  {{ day.day | date:'MM'}}</div>
+                            <div class="row">  {{ day.day | date:'EEE'}}</div>
+                    </div>
+                </div>
+            </div>
+                
+                </td>
+            <td  >
+                <!-- project start -->
+                <!-- <i  ng-click="addProject($index)"  class="fas fa-folder-plus"></i> -->
+                <div class="row lesspad">
+                <div class="col-md-12 dropzone" id="{{'drp'+$index}}" style="background: #cccccc;" data-index="{{$index}}"
+                ondrop="drop(event)" ondragover="allowDrop(event)" >Drag and Drop Tasks here</div>
+            </div>
+                <div class="row lesspad" ondragover="allowDrop(event)"  ng-repeat="projects in day.project" >
+
+                 
+                    <div class="col-md-3">
+                       
+                      {{ projects.project+' / '+ projects.task}}
+                     
+                    </div>
+
+                    <div class="col-md-3">
+                            <textarea class="form-control" placeholder="Description" name="" id={{$index}} ng-model=projects.desc cols="30" rows="10"></textarea> 
+                    </div>
+                    <div class="col-md-2"> <div class="input-group" style="width: 118px;">
+                            <input type="number" class="form-control"  ng-model=projects.hrs aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <span class="input-group-text" >Hrs</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                                <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                          <div class="input-group-text">
+                                            <input type="checkbox" ng-model="projects.progress" aria-label="Checkbox for following text input">
+                                          </div>
+                                        </div>
+                                         <input type="text" class="form-control"  aria-label="Text input with checkbox" disabled 
+                                         ng-model="projects.progress?'Completed':'Inprogress'">
+                                      </div>
+                           
+                        </div>
+                        <div class="col-md-1">
+
+                                <i  ng-click="projects.task='';projects.project='';projects.hrs=9;projects.progress=false"class="fas fa-sync"></i>
+                                <i ng-click="removeProjec($parent.$index , $index)" class="fa fa-trash"></i>
+
+                        </div>
+
+                </div>
+                  
+
+          
+
+                 
+                
+                
+               
+                <!-- <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <input type="checkbox" ng-model="day.progress" aria-label="Checkbox for following text input">
+                          </div>
+                        </div>
+                         <input type="text" class="form-control"  aria-label="Text input with checkbox" disabled 
+                         ng-model="day.progress?'Completed':'Inprogress'">
+                      </div>
+             <button ng-click="update()" >UPDATE</button> <button ng-click="day.task='';day.project='';day.hrs=9;day.progress=false" >CLEAR</button> 
+             -->
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+    </div>
+</div> </div>
+<script src="jquery-3.2.1.min.js"></script>
+<script src="jquery-ui.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="angular-route.js"></script>
+    <script src="script.js"></script>
+    <script src="sample.js"></script>
+    <script>
+
+</script>
+</body>
+</html>
